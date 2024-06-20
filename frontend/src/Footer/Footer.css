@@ -1,0 +1,11 @@
+footer {
+  background-color: purple;
+  color: white;
+  padding: 5px;
+  justify-content: flex-end;
+  margin-bottom: 0px;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
