@@ -65,14 +65,51 @@ app.post("/boards", async (req, res) => {
   }
 });
 
-// app.delete("/boards/:boardId", async (req, res) => {
-//   const boardId = parseInt(req.params.boardId);
+app.delete("/boards/:boardId", async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
 
-//   try {
-//   await prisma.card.deleteMany({ where: { boardId } });
-//   await prisma.board.delete({ where: { id: boardId } });
-//   res.json({ message: "Board deleted" });
-//   } catch (err) {
-//     res.status(500).json({ err: "Internal Server Error" });
-//   }
-// });
+  try {
+    await prisma.card.deleteMany({ where: { boardId } });
+    await prisma.board.delete({ where: { id: boardId } });
+    res.json({ message: "Board deleted" });
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+});
+
+app.get("/boards/:boardId/cards", async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
+
+  try {
+    const cards = await prisma.card.findMany({
+      where: { boardId },
+    });
+    res.json(cards);
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+});
+
+app.post("/boards/:boardId/cards", async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
+  const { message, author } = req.body;
+
+  try {
+    const selectedBoard = await prisma.board.findUnique({
+      where: { id: boardId },
+    });
+    const image_url = await getGif(selectedBoard.category);
+    const newCard = await prisma.card.create({
+      data: {
+        message,
+        author,
+        image_url,
+        upVote: 0,
+        board: { connect: { id: parseInt(boardId) } },
+      },
+    });
+    res.json(newCard);
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+});

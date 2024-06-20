@@ -36,21 +36,21 @@ function App() {
     handleDisplayBoard();
   });
 
-  // async function handleDeleteBoard(id) {
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/boards/${id}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (response.ok) {
-  //       handleDisplayBoard();
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  async function handleDeleteBoard(id) {
+    try {
+      const response = await fetch(`http://localhost:3000/boards/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        handleDisplayBoard();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className="App">
@@ -81,7 +81,7 @@ function App() {
             <BoardList
               handleDisplayBoardPage={handleDisplayBoardPage}
               board={boards}
-              // deleteBoard={handleDeleteBoard}
+              deleteBoard={handleDeleteBoard}
             />
           </main>
 

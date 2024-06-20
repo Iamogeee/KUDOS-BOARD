@@ -23,8 +23,12 @@ model Board {
 
 model Card{
   id Int @id @default(autoincrement())
+  img_url String
   message String
   author String
   board Board @relation(fields:[boardId], references:[id])
   boardId Int
+  Upvote Int @default(0)
+
 }
+

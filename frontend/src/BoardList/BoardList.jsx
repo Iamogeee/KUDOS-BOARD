@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import Board from "../Board/Board";
 import "./BoardList.css";
 
-function BoardList(props) {
+function BoardList({ board, handleDisplayBoardPage, deleteBoard }) {
   return (
     <div className="board-list">
-      {props.board.map((board) => {
+      {board.map((board, index) => {
         return (
           <Board
-            key={board.id}
+            key={index}
+            id={board.id}
             title={board.title}
             img_url={board.img_url}
             category={board.category}
-            displayBoard={props.handleDisplayBoardPage}
-            // deleteBoard={props.deleteBoard(board.id)}
+            displayBoard={handleDisplayBoardPage}
+            deleteBoard={deleteBoard}
           />
         );
       })}
