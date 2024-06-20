@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./Header/Header";
 import SearchBar from "./SearchBar/SearchBar";
@@ -11,6 +11,7 @@ import CardList from "./CardList/CardList";
 function App() {
   const [displayCreateForm, setDisplayCreateForm] = useState(false);
   const [displayBoardPage, setDisplayBoardPage] = useState(false);
+  const [boards, setBoards] = useState([]);
 
   function handleDisplayBoardPage() {
     setDisplayBoardPage(!displayBoardPage);
@@ -19,6 +20,37 @@ function App() {
   function handleDisplayCreateForm() {
     setDisplayCreateForm(!displayCreateForm);
   }
+
+  async function handleDisplayBoard() {
+    const response = await fetch("http://localhost:3000/boards", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setBoards(data);
+  }
+
+  useEffect(() => {
+    handleDisplayBoard();
+  });
+
+  // async function handleDeleteBoard(id) {
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/boards/${id}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       handleDisplayBoard();
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   return (
     <div className="App">
@@ -46,7 +78,11 @@ function App() {
                 displayForm={handleDisplayCreateForm}
               />
             </div>
-            <BoardList handleDisplayBoardPage={handleDisplayBoardPage} />
+            <BoardList
+              handleDisplayBoardPage={handleDisplayBoardPage}
+              board={boards}
+              // deleteBoard={handleDeleteBoard}
+            />
           </main>
 
           <Footer />

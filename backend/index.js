@@ -1,11 +1,12 @@
 import express from "express";
 import bodyParser from "body-parser";
-import pg from "pg";
 import cors from "cors";
 import env from "dotenv";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
 const port = 3000;
+const prisma = new PrismaClient();
 env.config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,12 +29,12 @@ async function getGif(category) {
   return gifUrl;
 }
 
-app.get("/", async (req, res) => {
-  res.send(`Hello World!`);
-});
-
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.get("/boards", async (req, res) => {
@@ -47,14 +48,14 @@ app.get("/boards", async (req, res) => {
 
 app.post("/boards", async (req, res) => {
   const { title, category, author } = req.body;
-  const image_url = await getGif(category);
+  const img_url = await getGif(category);
   try {
     const newBoard = await prisma.board.create({
       data: {
         title,
         category,
         author,
-        image_url,
+        img_url,
       },
     });
 
@@ -63,3 +64,15 @@ app.post("/boards", async (req, res) => {
     res.status(500).json({ err: "Internal Server Error" });
   }
 });
+
+// app.delete("/boards/:boardId", async (req, res) => {
+//   const boardId = parseInt(req.params.boardId);
+
+//   try {
+//   await prisma.card.deleteMany({ where: { boardId } });
+//   await prisma.board.delete({ where: { id: boardId } });
+//   res.json({ message: "Board deleted" });
+//   } catch (err) {
+//     res.status(500).json({ err: "Internal Server Error" });
+//   }
+// });

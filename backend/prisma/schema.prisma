@@ -16,6 +16,7 @@ model Board {
   id Int @id @default(autoincrement())
   img_url String
   title String
+  author String
   category String
   cards Card[]
 }
