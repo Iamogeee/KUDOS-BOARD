@@ -77,6 +77,24 @@ app.delete("/boards/:boardId", async (req, res) => {
   }
 });
 
+app.get("/boards/:boardId", async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
+
+  try {
+    const board = await prisma.board.findUnique({
+      where: { id: boardId },
+      include: { cards: true }, // Include related cards if necessary
+    });
+    if (board) {
+      res.json(board);
+    } else {
+      res.status(404).json({ err: "Board not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+});
+
 app.get("/boards/:boardId/cards", async (req, res) => {
   const boardId = parseInt(req.params.boardId);
 
@@ -90,6 +108,7 @@ app.get("/boards/:boardId/cards", async (req, res) => {
   }
 });
 
+// creates a card for an existing board
 app.post("/boards/:boardId/cards", async (req, res) => {
   const boardId = parseInt(req.params.boardId);
   const { message, author } = req.body;

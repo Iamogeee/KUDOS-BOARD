@@ -1,25 +1,26 @@
 import "./CreateForm.css";
 import React, { useState, useEffect } from "react";
 
+// This form is shared by both Cards and Boards
 function CreateForm(props) {
-  const [boards, setBoards] = useState([]);
-  const [cards, setCards] = useState([]);
+  //const [boards, setBoards] = useState([]);
+  //const [cards, setCards] = useState([]);
 
-  async function addBoard(title, category, author) {
-    try {
-      const response = await fetch("http://localhost:3000/boards", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, category, author }),
-      });
-      const data = await response.json();
-      setBoards([...boards, data]);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // async function addBoard(title, category, author) {
+  //   try {
+  //     const response = await fetch("http://localhost:3000/boards", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ title, category, author }),
+  //     });
+  //     const data = await response.json();
+  //     //setBoards([...boards, data]);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   // async function addCard(boardId, message, author) {
   //   try {
@@ -41,6 +42,8 @@ function CreateForm(props) {
   // }
 
   // if (props.formName == "board") {
+
+  const isCreatingBoard = props.isCreatingBoard;
   return (
     <div id="create-board-form" className="modal-overlay">
       <div className="modal-content">
@@ -54,7 +57,7 @@ function CreateForm(props) {
             const title = e.target.elements[0].value;
             const category = e.target.elements[1].value;
             const author = e.target.elements[2].value;
-            addBoard(title, category, author);
+            props.handleCreate(title, category, author);
             props.displayForm();
           }}
         >

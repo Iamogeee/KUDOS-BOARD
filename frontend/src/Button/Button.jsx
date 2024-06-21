@@ -4,7 +4,7 @@ function Button(props) {
   return (
     <button
       onClick={() => {
-        props.name.includes("Create") ? props.displayForm() : null;
+        props.onClick();
       }}
     >
       {props.name}

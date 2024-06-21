@@ -12,6 +12,21 @@ function App() {
   const [displayCreateForm, setDisplayCreateForm] = useState(false);
   const [displayBoardPage, setDisplayBoardPage] = useState(false);
   const [boards, setBoards] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredBoards = boards.filter((board) => {
+    if (selectedCategory !== "all" && board.category !== selectedCategory) {
+      return false;
+    }
+    if (
+      searchQuery &&
+      !board.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   function handleDisplayBoardPage() {
     setDisplayBoardPage(!displayBoardPage);
@@ -34,7 +49,7 @@ function App() {
 
   useEffect(() => {
     handleDisplayBoard();
-  });
+  }, []);
 
   async function handleDeleteBoard(id) {
     try {
@@ -52,35 +67,68 @@ function App() {
     }
   }
 
+  async function onCreateBoard(title, category, author) {
+    try {
+      const response = await fetch("http://localhost:3000/boards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, category, author }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        handleDisplayBoard();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="App">
       {!displayBoardPage ? (
         <>
           {displayCreateForm ? (
-            <CreateForm displayForm={handleDisplayCreateForm} />
+            <CreateForm
+              displayForm={handleDisplayCreateForm}
+              handleCreate={onCreateBoard}
+            />
           ) : null}
 
           <Header />
 
           <main>
-            <SearchBar />
+            <SearchBar query={searchQuery} onSearch={setSearchQuery} />
             <div className="buttons">
-              <Button name="All" />
-              <Button name="Recent" />
-              <Button name="Celebration" />
-              <Button name="Thank You" />
-              <Button name="Inspiration" />
+              <Button name="All" onClick={() => setSelectedCategory("all")} />
+              <Button
+                name="Recent"
+                onClick={() => setSelectedCategory("recent")}
+              />
+              <Button
+                name="Celebration"
+                onClick={() => setSelectedCategory("celebration")}
+              />
+              <Button
+                name="Thank You"
+                onClick={() => setSelectedCategory("thank you")}
+              />
+              <Button
+                name="Inspiration"
+                onClick={() => setSelectedCategory("inspiration")}
+              />
             </div>
 
             <div className="create-buttons">
               <Button
                 name="Create New Board"
-                displayForm={handleDisplayCreateForm}
+                onClick={handleDisplayCreateForm}
               />
             </div>
             <BoardList
               handleDisplayBoardPage={handleDisplayBoardPage}
-              board={boards}
+              board={filteredBoards}
               deleteBoard={handleDeleteBoard}
             />
           </main>
