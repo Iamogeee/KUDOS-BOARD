@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./App.css";
 import Header from "./Header/Header";
 import SearchBar from "./SearchBar/SearchBar";
@@ -7,13 +9,16 @@ import BoardList from "./BoardList/BoardList";
 import Footer from "./Footer/Footer";
 import CreateForm from "./CreateForm/CreateForm";
 import CardList from "./CardList/CardList";
+import BoardDetail from "./BoardDetail/BoardDetail";
 
 function App() {
   const [displayCreateForm, setDisplayCreateForm] = useState(false);
-  const [displayBoardPage, setDisplayBoardPage] = useState(false);
   const [boards, setBoards] = useState([]);
+  const [cards, setCards] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { boardId } = useParams();
 
   const filteredBoards = boards.filter((board) => {
     if (selectedCategory !== "all" && board.category !== selectedCategory) {
@@ -27,10 +32,6 @@ function App() {
     }
     return true;
   });
-
-  function handleDisplayBoardPage() {
-    setDisplayBoardPage(!displayBoardPage);
-  }
 
   function handleDisplayCreateForm() {
     setDisplayCreateForm(!displayCreateForm);
@@ -67,6 +68,22 @@ function App() {
     }
   }
 
+  async function deleteCard(cardId) {
+    try {
+      const response = await fetch(`http://localhost:3000/cards/${cardId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        handleDisplayBoard();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function onCreateBoard(title, category, author) {
     try {
       const response = await fetch("http://localhost:3000/boards", {
@@ -76,8 +93,10 @@ function App() {
         },
         body: JSON.stringify({ title, category, author }),
       });
+      console.log("creating");
       const data = await response.json();
       if (response.ok) {
+        console.log("creating");
         handleDisplayBoard();
       }
     } catch (err) {
@@ -86,59 +105,87 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {!displayBoardPage ? (
-        <>
-          {displayCreateForm ? (
-            <CreateForm
-              displayForm={handleDisplayCreateForm}
-              handleCreate={onCreateBoard}
+    <Router>
+      <div className="App">
+        <Header />
+
+        <main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  {displayCreateForm && (
+                    <CreateForm
+                      formName="board"
+                      displayForm={handleDisplayCreateForm}
+                      handleCreate={onCreateBoard}
+                    />
+                  )}
+                  <SearchBar query={searchQuery} onSearch={setSearchQuery} />
+                  <div className="buttons">
+                    <Button
+                      name="All"
+                      onClick={() => setSelectedCategory("all")}
+                    />
+                    <Button
+                      name="Recent"
+                      onClick={() => setSelectedCategory("recent")}
+                    />
+                    <Button
+                      name="Celebration"
+                      onClick={() => setSelectedCategory("celebration")}
+                    />
+                    <Button
+                      name="Thank You"
+                      onClick={() => setSelectedCategory("thank you")}
+                    />
+                    <Button
+                      name="Inspiration"
+                      onClick={() => setSelectedCategory("inspiration")}
+                    />
+                  </div>
+
+                  <div className="create-buttons">
+                    <Button
+                      name="Create New Board"
+                      onClick={handleDisplayCreateForm}
+                    />
+                  </div>
+                  <BoardList
+                    board={filteredBoards}
+                    deleteBoard={handleDeleteBoard}
+                  />
+                </>
+              }
             />
-          ) : null}
-
-          <Header />
-
-          <main>
-            <SearchBar query={searchQuery} onSearch={setSearchQuery} />
-            <div className="buttons">
-              <Button name="All" onClick={() => setSelectedCategory("all")} />
-              <Button
-                name="Recent"
-                onClick={() => setSelectedCategory("recent")}
-              />
-              <Button
-                name="Celebration"
-                onClick={() => setSelectedCategory("celebration")}
-              />
-              <Button
-                name="Thank You"
-                onClick={() => setSelectedCategory("thank you")}
-              />
-              <Button
-                name="Inspiration"
-                onClick={() => setSelectedCategory("inspiration")}
-              />
-            </div>
-
-            <div className="create-buttons">
-              <Button
-                name="Create New Board"
-                onClick={handleDisplayCreateForm}
-              />
-            </div>
-            <BoardList
-              handleDisplayBoardPage={handleDisplayBoardPage}
-              board={filteredBoards}
-              deleteBoard={handleDeleteBoard}
+            <Route
+              path="/boards/:boardId/cards"
+              element={
+                <>
+                  {/* {displayCreateForm && (
+                    <CreateForm
+                      formName="card"
+                      displayForm={handleDisplayCreateForm}
+                      handleCreate={addCard}
+                    />
+                  )} */}
+                  <div className="create-buttons">
+                    <CardList
+                      cards={cards}
+                      setCards={setCards}
+                      deleteCard={deleteCard}
+                    />
+                  </div>
+                </>
+              }
             />
-          </main>
+          </Routes>
+        </main>
 
-          <Footer />
-        </>
-      ) : (
-        <CardList handleDisplayBoardPage={handleDisplayBoardPage} />
-      )}
-    </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

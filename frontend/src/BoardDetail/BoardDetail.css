@@ -1,0 +1,25 @@
+.board-detail {
+  border: 1px solid #ccc; /* Example border */
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+}
+
+.board-detail img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.detail-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.upvote-button,
+.delete-button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}

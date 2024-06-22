@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import env from "dotenv";
+import fetch from "node-fetch";
 import { PrismaClient } from "@prisma/client";
 
 const app = express();
@@ -48,6 +49,7 @@ app.get("/boards", async (req, res) => {
 
 app.post("/boards", async (req, res) => {
   const { title, category, author } = req.body;
+  console.log("posting to boatrds");
   const img_url = await getGif(category);
   try {
     const newBoard = await prisma.board.create({
@@ -56,11 +58,13 @@ app.post("/boards", async (req, res) => {
         category,
         author,
         img_url,
+        upvote: 0,
       },
     });
 
     res.json(newBoard);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ err: "Internal Server Error" });
   }
 });
@@ -83,7 +87,7 @@ app.get("/boards/:boardId", async (req, res) => {
   try {
     const board = await prisma.board.findUnique({
       where: { id: boardId },
-      include: { cards: true }, // Include related cards if necessary
+      include: { cards: true },
     });
     if (board) {
       res.json(board);
@@ -100,15 +104,26 @@ app.get("/boards/:boardId/cards", async (req, res) => {
 
   try {
     const cards = await prisma.card.findMany({
-      where: { boardId },
+      where: { boardId: +boardId },
+      orderBy: { id: "desc" },
     });
     res.json(cards);
+  } catch (err) {
+    res.status(500).json({ err: err });
+  }
+});
+
+app.delete("/cards/:cardId", async (req, res) => {
+  const cardId = parseInt(req.params.cardId);
+
+  try {
+    await prisma.card.delete({ where: { id: cardId } });
+    res.json({ message: "Card deleted" });
   } catch (err) {
     res.status(500).json({ err: "Internal Server Error" });
   }
 });
 
-// creates a card for an existing board
 app.post("/boards/:boardId/cards", async (req, res) => {
   const boardId = parseInt(req.params.boardId);
   const { message, author } = req.body;
@@ -117,18 +132,35 @@ app.post("/boards/:boardId/cards", async (req, res) => {
     const selectedBoard = await prisma.board.findUnique({
       where: { id: boardId },
     });
-    const image_url = await getGif(selectedBoard.category);
+    const img_url = await getGif(selectedBoard.category);
     const newCard = await prisma.card.create({
       data: {
         message,
         author,
-        image_url,
-        upVote: 0,
+        img_url,
+        upvote: 0,
         board: { connect: { id: parseInt(boardId) } },
       },
     });
+
     res.json(newCard);
   } catch (err) {
     res.status(500).json({ err: "Internal Server Error" });
+  }
+});
+
+app.put("/cards/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const card = await prisma.card.update({
+      where: { id: parseInt(id) },
+      data: { upvote: { increment: 1 } },
+    });
+
+    res.json(card);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Card could not be updated.");
   }
 });

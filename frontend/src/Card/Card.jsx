@@ -1,19 +1,30 @@
 import "./Card.css";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
-function Card() {
-  const [upvotes, setUpvotes] = useState(0);
-  function handleVotes() {
-    setUpvotes(upvotes + 1);
+function Card({ card, deleteCard, upvoteCard }) {
+  const { boardId } = useParams();
+  // const [upvotes, setUpvotes] = useState(0);
+  // const [voteName, setVoteName] = useState("Upvote");
+  const handleUpvote = async () => {
+    upvoteCard(card.id);
+  };
+
+  function handleDeleteCard() {
+    deleteCard(card.id);
+
+    // TODO: fix temporary solution to refreshing page
+    window.location.reload();
   }
+
   return (
     <div className="card">
-      <p>Text Message</p>
-      <img src="public/giphy.webp" alt="" />
-      <p>Card Author</p>
+      <p>{card.message}</p>
+      <img src={card.img_url} alt="" />
+      <p>{card.author}</p>
       <div className="card-buttons">
-        <button onClick={handleVotes}> {`Upvote:${upvotes}`} </button>
-        <button>Delete Card</button>
+        <button onClick={handleUpvote}> {`Upvotes: ${card.upvote}`} </button>
+        <button onClick={handleDeleteCard}>Delete Card</button>
       </div>
     </div>
   );
