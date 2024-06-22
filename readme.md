@@ -17,7 +17,7 @@ Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
     - [x] Other categories display boards of that type.
   - [x] Users can search for a board by name.
   - [x] Users can click on a board to navigate to a new page containing that board.
-  - [ ] Users can create a new board.
+  - [x] Users can create a new board.
     - [x] Boards should have a title, category, and author (optional).
   - [x] User can delete boards.
 - [ ] **Board Page**
