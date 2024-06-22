@@ -12,7 +12,7 @@ function CardList({ cards, setCards, deleteCard }) {
   async function addCard(message, author) {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${boardId}/cards`,
+        `https://kudos-board-ex4c.onrender.com/boards/${boardId}/cards`,
         {
           method: "POST",
           headers: {
@@ -31,7 +31,7 @@ function CardList({ cards, setCards, deleteCard }) {
   async function getCards() {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${boardId}/cards`,
+        `https://kudos-board-ex4c.onrender.com/boards/${boardId}/cards`,
         {
           method: "GET",
           headers: {
@@ -48,12 +48,15 @@ function CardList({ cards, setCards, deleteCard }) {
 
   async function upvoteCard(id) {
     try {
-      const response = await fetch(`http://localhost:3000/cards/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://kudos-board-ex4c.onrender.com/cards/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       getCards();
     } catch (err) {
       console.error(err);

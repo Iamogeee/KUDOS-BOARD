@@ -37,12 +37,15 @@ function App() {
   }
 
   async function handleDisplayBoard() {
-    const response = await fetch("http://localhost:3000/boards", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://kudos-board-ex4c.onrender.com/boards",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     setBoards(data);
   }
@@ -53,12 +56,15 @@ function App() {
 
   async function handleDeleteBoard(id) {
     try {
-      const response = await fetch(`http://localhost:3000/boards/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://kudos-board-ex4c.onrender.com/boards/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         handleDisplayBoard();
       }
@@ -69,12 +75,15 @@ function App() {
 
   async function deleteCard(cardId) {
     try {
-      const response = await fetch(`http://localhost:3000/cards/${cardId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://kudos-board-ex4c.onrender.com/cards/${cardId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         handleDisplayBoard();
       }
@@ -85,13 +94,16 @@ function App() {
 
   async function onCreateBoard(title, category, author) {
     try {
-      const response = await fetch("http://localhost:3000/boards", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, category, author }),
-      });
+      const response = await fetch(
+        "https://kudos-board-ex4c.onrender.com/boards",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title, category, author }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {

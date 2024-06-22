@@ -2,7 +2,7 @@
 
 Submitted by: Ogenna Obiora
 
-Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
+Deployed Application (optional): [Kudos Board Deployed Site](https://kudos-board-frontend-1u8z.onrender.com)
 
 ### Application Features
 
@@ -20,7 +20,7 @@ Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
   - [x] Users can create a new board.
     - [x] Boards should have a title, category, and author (optional).
   - [x] User can delete boards.
-- [ ] **Board Page**
+- [x] **Board Page**
   - [x] Displays a list of all cards for a board.
     - [x] Each card features a text message.
     - [x] Each card features a gif found using the [GIPHY API](https://developers.giphy.com/docs/api/).
