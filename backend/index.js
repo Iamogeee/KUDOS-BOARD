@@ -49,7 +49,6 @@ app.get("/boards", async (req, res) => {
 
 app.post("/boards", async (req, res) => {
   const { title, category, author } = req.body;
-  console.log("posting to boatrds");
   const img_url = await getGif(category);
   try {
     const newBoard = await prisma.board.create({

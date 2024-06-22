@@ -4,8 +4,6 @@ import { useParams } from "react-router-dom";
 
 function Card({ card, deleteCard, upvoteCard }) {
   const { boardId } = useParams();
-  // const [upvotes, setUpvotes] = useState(0);
-  // const [voteName, setVoteName] = useState("Upvote");
   const handleUpvote = async () => {
     upvoteCard(card.id);
   };
@@ -13,7 +11,6 @@ function Card({ card, deleteCard, upvoteCard }) {
   function handleDeleteCard() {
     deleteCard(card.id);
 
-    // TODO: fix temporary solution to refreshing page
     window.location.reload();
   }
 

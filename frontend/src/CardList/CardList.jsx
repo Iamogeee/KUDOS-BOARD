@@ -5,17 +5,9 @@ import CreateForm from "../CreateForm/CreateForm";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-//the problem is the Card form and the Board form have very different fields, so we can't easily share code between them.
-// so we can have 2 separate components for both dialogs / forms
-// Take CreateForm and split it out into CreateCardForm and CreateBoardForm
 function CardList({ cards, setCards, deleteCard }) {
   const { boardId } = useParams();
-  // const [cards, setCards] = useState([]);
-  // const [cardId, setCardId] = useState(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  // function onCreateCard() {
-  // console.log("Card Created");
-  // }
 
   async function addCard(message, author) {
     try {

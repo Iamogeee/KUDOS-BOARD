@@ -8,7 +8,7 @@ Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
 
 #### CORE FEATURES
 
-- [ ] **Home Page**
+- [x] **Home Page**
   - [x] Displays header, banner, search, board grid, and footer.
   - [x] Displays preview of all boards on initial page load.
     - [x] Boards previews should show an image/gif and board title.
@@ -37,30 +37,37 @@ Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
     - [ ] Anonymous cards or cards by guest users should still be allowed.
   - [ ] Add a new filter option on the home page to display only the current user's boards.
   - [ ] Allow boards to be deleted only if they are owned by the user.
-- [ ] **Deployment**
-  - [ ] Website is deployed via Render.
+- [x] **Deployment**
+  - [x] Website is deployed via Render.
 - [ ] **Comments**
   - [ ] Users should be able to comment on cards.
 
 ### Walkthrough Video
 
-`TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after adding walkthrough video)
+`<div>
+<a href="https://www.loom.com/share/1b9c567c45b541e6aebb370c2b7645e1">
 
-`ADD_EMBEDDED_CODE_HERE`
+<p>Loom Message - 21 June 2024 - Watch Video</p>
+</a>
+<a href="https://www.loom.com/share/1b9c567c45b541e6aebb370c2b7645e1">
+<img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/1b9c567c45b541e6aebb370c2b7645e1-with-play.gif">
+</a>
+
+  </div>`
 
 ### Reflection
 
 - Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
 
-Add your response here
+  I felt unprepared when creating different routes and paths
 
 - If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
 
-Add your response here
+If I had more time I would have added a comment feature to my website
 
 - Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-Add your response here
+I would have liked to have added a button that navigates back to the home page.
 
 ### Open-source libraries used
 

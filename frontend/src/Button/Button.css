@@ -4,3 +4,8 @@ button {
   padding: 15px;
   border-radius: 5px;
 }
+
+button :hover {
+  background-color: #f1f1f1;
+  color: black;
+}

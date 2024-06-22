@@ -9,7 +9,6 @@ import BoardList from "./BoardList/BoardList";
 import Footer from "./Footer/Footer";
 import CreateForm from "./CreateForm/CreateForm";
 import CardList from "./CardList/CardList";
-import BoardDetail from "./BoardDetail/BoardDetail";
 
 function App() {
   const [displayCreateForm, setDisplayCreateForm] = useState(false);
@@ -64,7 +63,7 @@ function App() {
         handleDisplayBoard();
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -80,7 +79,7 @@ function App() {
         handleDisplayBoard();
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -93,14 +92,13 @@ function App() {
         },
         body: JSON.stringify({ title, category, author }),
       });
-      console.log("creating");
+
       const data = await response.json();
       if (response.ok) {
-        console.log("creating");
         handleDisplayBoard();
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -163,13 +161,6 @@ function App() {
               path="/boards/:boardId/cards"
               element={
                 <>
-                  {/* {displayCreateForm && (
-                    <CreateForm
-                      formName="card"
-                      displayForm={handleDisplayCreateForm}
-                      handleCreate={addCard}
-                    />
-                  )} */}
                   <div className="create-buttons">
                     <CardList
                       cards={cards}
